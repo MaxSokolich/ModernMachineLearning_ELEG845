@@ -1,9 +1,9 @@
 
 
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
 import numpy as np
 import matplotlib.pyplot as plt
-
+np.random.seed(0)
 
 #############################################################################
 # The logistic function
@@ -50,7 +50,6 @@ label[0:x_batch1.shape[0]] = 1
 print('The label fo the dataset is ')
 print(label)
 
-
 #############################################################################
 # Hyper-parameters
 training_epochs = 500
@@ -62,8 +61,50 @@ learning_rate = 0.0005            # The optimization initial learning rate
 #############################################################################
 
 def logistic_regression(beta, lr, x_batch, y_batch):
+    
+    def sigmoid(z):
+        return 1 / (1 + np.exp(-z))
 
+    def liklihood_func(beta,x_batch, y_batch):
+        #matrix way
+        z = np.dot(beta.T, x_batch)
+        cost = - np.dot(y_batch , np.log(sigmoid(z))) + np.dot((1-y_batch) , np.log(1 - sigmoid(z)))
+        
+        #for loop way
+        cost2 = 0
+        n = len(x_batch)
+        for i in range(n):
+            z = np.dot(beta.T, x_batch[:,i])  
+            cost2 -= y_batch[i] * np.log(sigmoid(z)) + (1-y_batch[i])*np.log(1-sigmoid(z))
 
+        return cost2
+
+    def grad_likelihood(beta, x_batch, y_batch):
+         #matrix way
+        z = np.dot(beta.T, x_batch)
+        dcost = - np.dot(x_batch ,  (y_batch - sigmoid(z))) 
+        
+        #for loop way
+        dcost2 = 0
+        n = len(x_batch)
+        for i in range(n):
+            z = np.dot(beta.T, x_batch[:,i])  
+            dcost2 -= np.dot(x_batch[:,i] , (y_batch[i] - sigmoid(z)) )
+
+        return dcost2
+    
+
+    z = np.dot(beta.T, x_batch)
+
+    cost = -np.sum(np.dot(y_batch , np.log(sigmoid(z))) + np.dot((1-y_batch) , np.log(1 - sigmoid(z))))    #WORKS
+    dcost = -np.dot(x_batch , (y_batch - sigmoid(z)))
+                                                 #WORKS
+    
+    
+    #ost = liklihood_func(beta,x_batch,y_batch) 
+    #dcost = grad_likelihood(beta, x_batch, y_batch)
+    beta_next = beta - lr * dcost
+    
     return cost, beta_next
 
 #############################################################################
@@ -79,6 +120,10 @@ for epoch in range(training_epochs):
     cost, beta_next = logistic_regression(beta,learning_rate,data,label)
     print('Epoch %3d, cost %.3f, the learned weight and bias are (%.3f, %.3f)' % (epoch+1,cost,-beta_next[0]/beta_next[1],-beta_next[2]/beta_next[2]))
     beta = beta_next
+    
+
+
+
 
 
 # Visualizing the dataset and the learned linear model
@@ -105,3 +150,4 @@ plt.plot(xx,yy,'g')
 plt.title('The blue/red points are the dataset, the green line is the learned linear classifer')
 
 plt.show()
+

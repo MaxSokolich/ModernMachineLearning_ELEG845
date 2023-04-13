@@ -24,11 +24,11 @@ def generate_dataset(W,b,n):
 # The dimension of the dataset
 n = 1000
 # The weight and the bias of the linear model1 y = Wx + b
-Weight1 = 3
+Weight1 = 2
 bias1 = -2
 # The weight and the bias of the linear model2 y = Wx + b
 Weight2 = 2
-bias2 = 3
+bias2 = 2
 
 
 # Generating the dataset of two linear models
@@ -68,6 +68,7 @@ with g.as_default():
     left = tf.multiply(y, tf.log(tf.nn.sigmoid(y_pred)))
     right = tf.multiply(1-y, tf.log(tf.nn.sigmoid(1-y_pred)))
     cost = -tf.reduce_sum(tf.add(left,right))
+    print(cost)
     # Gradient Descent Optimizer 
     optimizer = tf.train.GradientDescentOptimizer(learning_rate).minimize(cost) 
 
