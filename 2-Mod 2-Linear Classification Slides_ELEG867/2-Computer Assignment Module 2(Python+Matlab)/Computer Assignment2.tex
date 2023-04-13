@@ -1,0 +1,134 @@
+\documentclass[11pt,oneside,a4paper]{article}
+
+\usepackage{cite}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{epsfig}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{refstyle}
+\usepackage{float}
+\usepackage{array}
+\usepackage{amssymb}
+\usepackage{subcaption}
+\usepackage{wrapfig}
+\usepackage{multirow}
+\usepackage{pseudocode}
+\usepackage{fancybox}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{algpseudocode}
+\usepackage{algorithmicx}
+\usepackage{algorithm}
+
+\usepackage[normalem]{ulem}
+\usepackage{soul}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argminA}{arg\,min}
+%\title{ELEG636: Introduction to Machine Learning Homework \#1}
+\begin{document}
+%\maketitle
+\title{Modern Machine Learning\\Computer Assignment \#2}
+\date{\vspace{-5ex}}
+\maketitle
+%We thank the editor for his/her comments on the manuscript. %His/her suggestions/recommendations have significantly improved %the manuscript.
+%In the following, we address each of the editor's comments in the %order in which they were mentioned.
+%\\
+\begin{enumerate}
+	
+  \item \textit{Binary Logistic Regression:} Using MATLAB or Python, implement the cost function for logistic regression and then minimize it.
+  \\
+  \\
+  \textbf{Background:} The cost function to be minimized is the \textit{negative} log-likelihood function
+  
+  \begin{equation}\nonumber
+  NLL(\pmb{\beta})=-\sum_{i=1}^{n}y_i \log\left(p(\mathbf{x}_i, \pmb{\beta} )  \right)+(1-y_i)\log\left(1-p(\mathbf{x}_i, \pmb{\beta} )  \right),
+  \end{equation}  
+  where $p(\mathbf{x}_i, \pmb{\beta} ) =\frac{1}{1+e^{-\pmb{\beta}^T\mathbf{x}_i}}$ (logistic function). The derivative of the negative log-likelihood can be expressed as
+  \begin{equation}\nonumber
+  \frac{\partial NLL(\pmb{\beta})}{\partial \pmb{\beta}}=-\sum_{i=1}^{n}\mathbf{x}_i\left(y_i-p(\mathbf{x}_i, \pmb{\beta} )  \right)
+  \end{equation}
+  
+   \textbf{Python files:} The log\_regression\_example.py uses the Tensorflow package to realize the logistic regression for binary classification based on randomly generated data. It also plots the data and the decision boundary.
+  \\
+  \textbf{Submission guidelines:} Your submission should include:
+  \begin{itemize}
+  	\item A unique \textbf{zip folder}, which should include a modified version of log\_regression.py, in which you need to realize the function $logistic\_regression$. 
+	The function $logistic\_regression$ is designed to minimizing the cost function $NLL(\pmb{\beta})$ via gradient descent. 
+	\item the structure of $logistic\_regression(\boldsymbol{beta}, lr, \boldsymbol{x\_batch}, \boldsymbol{y\_btach})$ is summarized as follows: (i) $\boldsymbol{beta}$ is a $3 \times 1$ vector, (ii) $lr$ denotes the learning rate, (iii) $\boldsymbol{x\_batch}$ is the dataset of two linear models, the dimension of $\boldsymbol{x\_batch}$ is $2000 \times 3$, which means there are 2000 data points $\{(x, y, 1)\}_{i=1}^{2000}$, we extend $\{(x, y)\}_{i=1}^{2000}$ to $\{(x, y, 1)\}_{i=1}^{2000}$ for implement the matrix operation $\boldsymbol{x\_batch} \cdot \boldsymbol{beta}$, where $beta_3$ is the bias, e.g., $x \cdot beta_1 + y \cdot beta_2 + beta_3 \cdot 1$. In addition, $\boldsymbol{y\_btach}$ is the training labels for $\boldsymbol{x\_batch}$. If $(x, y)$ belongs to the first linear model, then $y_{batach} = 1$, otherwise $y\_batach = 0$.
+	%is the following: $[NLL(\pmb{\beta}),\frac{\partial NLL(\pmb{\beta})}{\partial \pmb{\beta}}]=\text{costLogistic}(\pmb{\beta},\textbf{X},\textbf{y})$, where $\textbf{X}$ are the observations, $\pmb{\beta}$ are the logistic regression coefficients, and $\textbf{y}$ are the class labels of the examples in $\textbf{X}$. Make sure the results you obtain are very close to the ones returned by the funcion glmfit().
+	\item Please rename the modified file lin\_regression.py by adding your last name to the script name, e.g., lin\_regression\_smith.py.
+  	\item A pdf file with a comparative figure of the two lines obtained by your function and the log\_regression\_example.py. Explain possible differences.
+  \end{itemize}
+  
+  
+  \textbf{MATLAB files:} The script log\_regression\_example.m uses the MATLAB function $glmfit(\cdot)$ to obtain the logistic regression coefficients for binary classification using randomly generated data. It also plots the data and the decision boundary.
+  \\
+  \textbf{Submission guidelines:} Your submission should include:
+  \begin{itemize}
+  	\item A unique \textbf{zip folder}, which should include a modified version of log\_regression\_example.m and costLogistic.m. The structure of the function costLogistic.m is the following: $[NLL(\pmb{\beta}),\frac{\partial NLL(\pmb{\beta})}{\partial \pmb{\beta}}]=\text{costLogistic}(\pmb{\beta},\textbf{X},\textbf{y})$, where $\textbf{X}$ are the observations, $\pmb{\beta}$ are the logistic regression coefficients, and $\textbf{y}$ are the class labels of the examples in $\textbf{X}$. Make sure the results you obtain are very close to the ones returned by the funcion glmfit().
+  	Please rename the modified file log\_regression\_example, replacing the word 'example' in the provided script with your last name. For example log\_regression\_smith.m. \textbf{This should be the main function}.
+  	\item A pdf file with a comparative figure of the two lines obtained by your function and the function glmfit(). Explain possible differences.
+  \end{itemize}
+  
+  
+  \item \textit{Multiclass classification and regularization:} Using MATLAB, implement the \textit{one-vs-all} technique for multiclass classification using regularized logistic regression.
+  
+  \textbf{Background:} The one-vs-all approach consists of training $K$ separate binary classifiers, where $K$ is the number of classes, for each one of the different classes. 
+  \begin{itemize}\nonumber
+  %\begin{aligned}
+    \item Train $K$ separate binary classifiers producing $\pmb{\beta}_{j}$ ($j=1,2,\dots,K$)
+    \item For every new example $\textbf{x}$, find the predicted label as
+    \begin{equation}\nonumber
+    \hat{j}=\argmax_{j} p(\textbf{x},\pmb{\beta}_j), \text{where }  p(\mathbf{x}_i, \pmb{\beta} ) =\frac{1}{1+e^{-\pmb{\beta}^T\mathbf{x}_i}}
+    \end{equation}
+  %\end{aligned}
+  \end{itemize}  
+  
+  Recall that the equations for regularized logistic regression are the following
+    \begin{equation}\nonumber
+    NLL(\pmb{\beta})=-\sum_{i=1}^{n}y_i \log\left(p(\mathbf{x}_i, \pmb{\beta} )  \right)+(1-y_i)\log\left(1-p(\mathbf{x}_i, \pmb{\beta} )  \right) + \frac{\lambda}{2}\sum_{j=1}^{m}\beta_j^2,
+    \end{equation}  
+    where $m$ is the number of variables, and $p(\mathbf{x}_i, \pmb{\beta} )$ is the logistic function defined above.
+      \begin{equation}\nonumber
+   \frac{\partial NLL(\pmb{\beta})}{\partial \pmb{\beta}_j}=-\sum_{i=1}^{n} {x}_i^{(j)}\left(y_i-p(\mathbf{x}_i, \pmb{\beta} )  \right)+\lambda \beta_j
+   \end{equation}  
+  where $x_i^{(j)}$ is the $j$-th component of vector $\mathbf{x}_i$.
+
+  The data used in this exercise is a portion of the MINST database. It contains handwritten digits 0-9. The size of the images is $28\times 28$ pixels, these pixels are vectorized producing features of size $784\times1$. Your MATLAB program will attempt to recognize these digits. Examples of the handwritten digits can be seen in Figure \ref{fig:MINSTimages}. 
+  \begin{figure}\centering
+  			\includegraphics[height=0.12\textwidth]{digits.eps}
+  			\caption{Example images from MINST database}
+  			\label{fig:MINSTimages}
+   \end{figure}
+
+\textbf{Python files:} The multiclass\_log\_reg.py is the template to implment your one-vs-all classifier. 
+  \\
+  \textbf{Submission guidelines:} Your submission should include:
+  \begin{itemize}
+  	\item To run the multiclass\_log\_reg.py script, you are required to install \textbf{scipy} package into your Anaconda environment. The command is \textbf{conda install scipy}.
+  	\item A unique \textbf{zip folder}, which should include a modified version of multiclass\_log\_reg.py, in which you need to realize the function $logistic\_regression$. 
+	The function $logistic\_regression$ is designed to minimizing the cost function $NLL(\pmb{\beta})$ with $L2$ norm regularization. 
+	\item the structure of $logistic\_regression(\boldsymbol{beta}, lr, \boldsymbol{x\_batch}, \boldsymbol{y\_btach}, \lambda1)$ is summarized as follows: (i) $\boldsymbol{beta}$ is a $785 \times 1$ vector, (ii) $lr$ is the learning rate, (iii) $\boldsymbol{x\_batch}$ is the MINIST dataset consisting 5000 images, the dimension of $\boldsymbol{x\_batch}$ is $5000 \times 785$, which means there are 5000 digit images $\{(\boldsymbol{x}, 1)\}_{i=1}^{5000}$, we extend $\{\boldsymbol{x}\}_{i=1}^{5000}$ to $\{(\boldsymbol{x}, 1)\}_{i=1}^{5000}$ for implement the matrix operation $\boldsymbol{x\_batch} \cdot \boldsymbol{beta}$, where $beta_{785}$ is the bias, e.g., $\sum_{i=1}^{784}x_i \cdot beta_i + beta_{785} \cdot 1$. 
+	$\boldsymbol{y\_btach}$ is the training labels for $\boldsymbol{x\_batch}$, its dimension is $5000 \times 10$. If $\boldsymbol{x}$ belongs to the ith digit, then $y_{batach} = [0,\cdots, 1, \cdots, 0]$.
+	%is the following: $[NLL(\pmb{\beta}),\frac{\partial NLL(\pmb{\beta})}{\partial \pmb{\beta}}]=\text{costLogistic}(\pmb{\beta},\textbf{X},\textbf{y})$, where $\textbf{X}$ are the observations, $\pmb{\beta}$ are the logistic regression coefficients, and $\textbf{y}$ are the class labels of the examples in $\textbf{X}$. Make sure the results you obtain are very close to the ones returned by the funcion glmfit().
+	\item Please rename the modified file logistic\_regression.py by adding your last name to the script name, e.g., lin\_regression\_smith.py.
+  	\item A pdf file with a figure showing the classification acuracy vs the regularization parameter $\lambda$. Vary $\lambda$ from 0 to 20, in steps of 1. Explain your results.
+  \end{itemize}
+  
+  \textbf{MATLAB files:} The script multiclass\_log\_reg\_example.m can be used as a template to implement your one-vs-all classifier. \textbf{The function fmincg.m is also provided to speed up the optimization process}. This function works the same way as the function fminunc() provided by MATLAB, but it is faster.
+
+  \textbf{Submission guidelines:} Your submission should include:
+  \begin{itemize}
+  	\item A unique \textbf{zip folder}, which should include a modified version of multiclass\_log\_reg\_example.m and multiclassLog.m. The structure of the function multiclassLog.m is the following: $\hat{\pmb{\beta}}_{matrix}=\text{multiclassLog}(\textbf{X},\textbf{y},K)$, where $\textbf{X}$ are the observations, $\hat{\pmb{\beta}}_{matrix}$ are the $K$ classifiers stacked column-wise as a matrix, and $K$ is the number of class labels, in this case $K=10$. This function should train $K$ binary classifiers using your past implementation of logistic regression. You can use a \textit{for} loop to achieve this. Be careful setting the labels so that for class $j$, the training examples belonging to class $j$ will be assigned label 1, and the other examples label 0. The function $pred=\text{predictmulticlass}(\hat{\pmb{\beta}}_{matrix},\textbf{y})$ is provided to predict the class labels using $\hat{\pmb{\beta}}_{matrix}$.
+  	
+  	Please rename the modified file multiclass\_log\_reg\_example.m replacing the word 'example' in the provided script with your last name. As in the previous exercise. \textbf{This should be the main function}.
+  	
+  	\item A pdf file with a figure showing the classification acuracy vs the regularization parameter $\lambda$. Vary $\lambda$ from 0 to 20, in steps of 1. Explain your results.
+  \end{itemize}
+  \textbf{Hint:} For $\lambda=0$, the classification accuracy should be about 87.5\%. 
+\end{enumerate}
+%\bibliographystyle{plain}
+%\bibliography{refs}
+
+\end{document}
