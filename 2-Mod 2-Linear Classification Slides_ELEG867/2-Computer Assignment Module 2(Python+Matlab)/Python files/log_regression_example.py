@@ -68,7 +68,7 @@ with g.as_default():
     left = tf.multiply(y, tf.log(tf.nn.sigmoid(y_pred)))
     right = tf.multiply(1-y, tf.log(tf.nn.sigmoid(1-y_pred)))
     cost = -tf.reduce_sum(tf.add(left,right))
-    print(cost)
+  
     # Gradient Descent Optimizer 
     optimizer = tf.train.GradientDescentOptimizer(learning_rate).minimize(cost) 
 

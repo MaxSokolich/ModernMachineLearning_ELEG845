@@ -1,6 +1,5 @@
 
 
-import tensorflow.compat.v1 as tf
 import numpy as np
 import matplotlib.pyplot as plt
 np.random.seed(0)
@@ -61,6 +60,15 @@ learning_rate = 0.0005            # The optimization initial learning rate
 #############################################################################
 
 def logistic_regression(beta, lr, x_batch, y_batch):
+
+    print("x_batch = ",x_batch.shape)
+    print("x_batch[i] = ",x_batch[1].shape)
+
+    print("y_batch = ",y_batch.shape)
+    print("y_batch[i] = ",y_batch[0].shape)
+
+    print("beta = ",beta.shape)
+    print("beta[i] = ",beta[1].shape)
     
     def sigmoid(z):
         return 1 / (1 + np.exp(-z))
@@ -94,17 +102,43 @@ def logistic_regression(beta, lr, x_batch, y_batch):
         return dcost2
     
 
+    def grad_descent():
+        n = len(x_batch)
+
+        #beta 1
+        dcost1 = 0
+        for i in range(n):
+            z = np.dot(beta[0], x_batch[i])  
+            dcost1 -= np.dot(x_batch[i] , (y_batch[i] - sigmoid(z)) )
+
+        beta1_next = beta[0] - lr * dcost1
+
+        #beta 2
+        dcost2 = 0
+        for i in range(n):
+            z = np.dot(beta[1], x_batch[i])  
+            dcost2 -= np.dot(x_batch[i] , (y_batch[i] - sigmoid(z)) )
+
+        beta2_next = beta[1] - lr * dcost2
+
+        #beta 3
+        dcost3 = 0
+        for i in range(n):
+            z = np.dot(beta[2], x_batch[i])  
+            dcost2 -= np.dot(x_batch[i] , (y_batch[i] - sigmoid(z)) )
+
+        beta3_next = beta[2] - lr * dcost3
+
+        return np.array([beta1_next, beta2_next, beta3_next])
+
+
+    #FINAL ALGORITHM
     z = np.dot(beta.T, x_batch)
 
     cost = -np.sum(np.dot(y_batch , np.log(sigmoid(z))) + np.dot((1-y_batch) , np.log(1 - sigmoid(z))))    #WORKS
     dcost = -np.dot(x_batch , (y_batch - sigmoid(z)))
-                                                 #WORKS
-    
-    
-    #ost = liklihood_func(beta,x_batch,y_batch) 
-    #dcost = grad_likelihood(beta, x_batch, y_batch)
     beta_next = beta - lr * dcost
-    
+                                                 
     return cost, beta_next
 
 #############################################################################

@@ -22,6 +22,6 @@ train_labels= train_labels(1:train_num);
 
 %% Uncomment the following two lines after completing multiclassLog
 
-%pred = predictMulticlass(beta_matrix, test_feats);
+pred = predictMulticlass(beta_matrix, test_feats);
 
-%fprintf('\n Accuracy: %f\n', mean(double(pred == test_labels)) * 100);
+fprintf('\n Accuracy: %f\n', mean(double(pred == test_labels)) * 100);
