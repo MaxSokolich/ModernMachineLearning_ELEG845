@@ -18,7 +18,7 @@ The derivitive equation with respect to beta below is as follows:  it is the neg
 
 Thus, the question becomes how to convert this "math" into code.  The examples below assume x is a  matrix of length 5000 x 2 and y is a vector of length 5000 x 1.  In other words we have 5000 observations of coordinates (x_1, x_2) and 5000 outputs that dsecribe whether a coordinate is above or below a boundary line. In addition we have 3 betas. A beta_0 which is the intercept, a beta_1 for x_1 and a beta_2 for x_2. One approach is the for loop approach which is essentially:
 
-'''
+```
 #for loop way
 dcost = 0
 n = len(x_batch)
@@ -28,23 +28,23 @@ for i in range(n):
 return dcost
 
 beta_next = beta_current - alpha * dcost
-'''
+```
 
 
 where the sigmoid function is the logistic function:
 
-'''
+```
 def sigmoid(z):
        return 1 / (1 + np.exp(-z))
-'''
+```
 
 Or we could do it the numpy matrix way:
 
-'''
+```
 z = np.dot(beta.T, x_batch)
 dcost = -np.dot(x , (y - sigmoid(z)))
 beta_next = beta - alpha * dcost
-'''
+```
       
 
 The result of this algorithm is the opitmal beta values that segrate our data set. That is, a line as shown below in green. Now, our model is able to classify whether an incoming coordinate (x_1, x_2) is part of blue color or red color. 
