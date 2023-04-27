@@ -1,0 +1,105 @@
+\documentclass[11pt,oneside,a4paper]{article}
+
+\usepackage{cite}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{epsfig}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{refstyle}
+\usepackage{float}
+\usepackage{array}
+\usepackage{amssymb}
+\usepackage{subcaption}
+\usepackage{wrapfig}
+\usepackage{multirow}
+\usepackage{pseudocode}
+\usepackage{fancybox}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{algpseudocode}
+\usepackage{algorithmicx}
+\usepackage{algorithm}
+\usepackage{hyperref}
+
+\usepackage[normalem]{ulem}
+\usepackage{soul}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argminA}{arg\,min}
+%\title{ELEG636: Introduction to Machine Learning Homework \#1}
+\begin{document}
+%\maketitle
+\title{Modern Machine Learning \\Computer Assignment \#3}
+\date{\vspace{-5ex}}
+\maketitle
+%We thank the editor for his/her comments on the manuscript. %His/her suggestions/recommendations have significantly improved %the manuscript.
+%In the following, we address each of the editor's comments in the %order in which they were mentioned.
+%\\
+\begin{enumerate}
+  \item \textit{Multiclass classification and regularization:} Using Python or MATLAB, implement the \textit{one-vs-all} technique for multiclass classification using Support Vector Machines.
+  
+  \textbf{Background:} The one-vs-all approach consists of trainining $K$ separate binary classifiers, where $K$ is the number of classes, for each one of the different classes. 
+  \begin{itemize}\nonumber
+  %\begin{aligned}
+    \item Train $K$ separate binary classifiers producing a set of classification rules $G_j(\mathbf{x})$ $(j=1,2,\dots,K)$ 
+    \item For every new example $\textbf{x}$, find the predicted label as
+    \begin{equation}\nonumber
+    \hat{j}=\argmax_{j} G_j(\mathbf{x})
+    \end{equation}
+  %\end{aligned}
+  \end{itemize}  
+  
+In this exercise, we still use the partial MINST database in Model 2. It contains handwritten digits 0-9. The size of the images is $28\times 28$ pixels, these pixels are vectorized producing features of size $784\times1$. Your program will attempt to recognize these digits. Examples of the handwritten digits can be seen in Figure \ref{fig:MINSTimages}.
+
+% the Extended YaleB face database is used. This database cointains images of 38 individuals under different lighting conditions. There are 64 images for each individual. The original images are resized to $32\times 32$ pixels, which are then vectorized producing features of size $1024\times1$. Your MATLAB program will attempt to recognize these images, similar to what is asked in Computer Assignment \#2 for logistic regression. Examples of the Extended YaleB images can be seen in Fig.\ref{fig:MINSTimages}. 
+
+  \begin{figure}\centering
+  			\includegraphics[height=0.12\textwidth]{digits.eps}
+  			\caption{Example images from MINST database}
+  			\label{fig:MINSTimages}
+   \end{figure}
+  
+  
+  \textbf{Python files:} The script multiclassSVM.py can be used as a template to implement your one-vs-all classifier. 
+  You can reuse useful coding information from the worked example (svm\_example.py) in Model 3 and the one-vs-all classification in Model 2.
+  However, you should finish the main function in multiclassSVM.py by your own.
+  
+  You are required to install the cvxopt package into your environment first, the command is 
+  
+  \centerline{ \textbf{conda install -c conda-forge cvxopt}}
+  You can find more information about the cvxopt package at the link \url{https://cvxopt.org/install/index.html}.
+  In addition, you also need the \textbf{scipy} package as Model 2.
+  
+  
+  \textbf{Submission guidelines:} Your submission should include:
+  \begin{itemize}
+  	\item A unique \textbf{zip folder}, which should include a modified version of multiclassSVM.py, plus all necessary files to run your code. 
+	\item You should complete the main function by yourself. In the main function, you need to finish three tasks: (1) use the one-vs-all method to train SVM models to get the corresponding weights, (2) use the one-vs-all method to test the learned SVM modesl to check the learned models, and (3) obtain the training accuracy and testing accuracy during the above two tasks.
+	\item You can reuse the code in the svm\_example.py file to solve SVM Wolfe dual problem for learning weights.
+	You can reuse the code from Model 2 to solve the one-vs-all problem.
+MNIST dataset is non-sperable case, you can refer 3-2 slides Page 7-8 to complete the classification task.
+You can refer 3-1 slides Page 5-8 to design classifcation accuracy function.
+
+  	\item Please rename the modified file multiclassSVM.py by adding your last name. \textbf{This should be the main function}.
+  	
+  	\item A pdf file with a figure showing the classification accuracy vs the variable C in the function `svm\_dual'. Choosing three different values, e.g., $C = \{0.00005, 0.01, 10\}$ to examine the training accuracy. Explain your results.
+  \end{itemize}
+  \textbf{Hint:} The training accuracy should be around 80\% and the testing accuracy should be around 60\%.. 
+
+
+  \textbf{MATLAB files:} The script multiclass\_svm\_example.m can be used as a template to implement your one-vs-all classifier. The function multiclassSVM.m should be finished by the student to complete the assignment.
+  \\
+  \textbf{Submission guidelines:} Your submission should include:
+  \begin{itemize}
+  	\item A unique \textbf{zip folder}, which should include a modified version of multiclass\_svm\_example.m and multiclassSVM.m, plus all necessary files to run your code. The function multiclassSVM.m has the following structure $\hat{\textbf{v}}=\text{multiclassSVM}(\textbf{X},\textbf{y},\textbf{U},m)$, where $\textbf{X}$ are the training examples, $\textbf{y}$ is a vector containing their corresponding class labels, $\textbf{U}$ is a matrix containig the testing examples, and $m$ is the number of class labels. The output $\hat{\textbf{v}}$ is a vector with the predicted labels of the testing examples in $\textbf{U}$. This function should train $K$ binary SVM classifiers using the MATLAB function $fitcsvm(\cdot)$ (using the \textbf{linear kernel}, which is the default option). You can use a \textit{for} loop to achieve this just as in Computer Assignmet \#2. 
+  	
+  	Please rename the modified file multiclass\_svm\_example.m replacing the word 'example' in the provided script with your last name. \textbf{This should be the main function}.
+  	
+  	\item A pdf file with a figure showing the classification accuracy vs number of training examples. The variable \textit{train\_num} in multiclass\_SVM\_example.m allows you to vary the number of training examples. Vary $train\_num$ from 2500 to 4500 examples in steps of 1000. Explain your results.
+  \end{itemize}
+  %\textbf{Hint:} For $num\_train\_perclass=50$, the classification accuracy should be about 70\%. 
+\end{enumerate}
+%\bibliographystyle{plain}
+%\bibliography{refs}
+
+\end{document}

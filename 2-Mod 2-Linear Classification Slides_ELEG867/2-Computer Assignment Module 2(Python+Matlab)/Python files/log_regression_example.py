@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 np.random.seed(0)
 
+
 #############################################################################
 # The logistic function
 def logistic(x,beta):

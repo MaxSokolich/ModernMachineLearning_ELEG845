@@ -113,7 +113,7 @@ FINAL = []
 for i in range(0,20): #loop through lambda
 	lambda1 = i
 	classification_list = []
-	for i in range(10):
+	for j in range(10):
 		current_label = data_y[:,0]
 		print("current label (1-10)", current_label.shape)
 		beta = np.random.randn(dim_images + 1)
