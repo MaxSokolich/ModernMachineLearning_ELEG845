@@ -50,3 +50,7 @@ beta_next = beta - alpha * dcost
 The result of this algorithm is the opitmal beta values that segrate our data set. That is, a line as shown below in green. Now, our model is able to classify whether an incoming coordinate (x_1, x_2) is part of blue color or red color. 
 
 <img width="635" alt="Screenshot 2023-04-16 at 1 37 46 PM" src="https://user-images.githubusercontent.com/50302377/232330543-dde71dc3-45ab-46b6-9336-8904831959df.png">
+
+Below is the overview for a training a neural network. refer to module 4, topic 2 for notation and more detail
+
+![NN](https://user-images.githubusercontent.com/50302377/234958496-eff5a224-9be0-4a3c-9a7f-10b6bfe59011.png)
