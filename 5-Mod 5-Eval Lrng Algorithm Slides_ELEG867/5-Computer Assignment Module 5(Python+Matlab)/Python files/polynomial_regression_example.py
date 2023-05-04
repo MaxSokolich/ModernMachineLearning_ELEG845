@@ -2,7 +2,7 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-
+np.random.seed(0)
 
 #############################################################################
 # The function to generate the polynomial dataset
@@ -34,7 +34,7 @@ x_batch, y_batch = generate_polynomial_dataset(Weight, n,degree)
 x_batch_ext = np.ones((n,degree+1))
 for ii in range(1,degree+1):
     x_batch_ext[:,ii] = x_batch ** ii
-
+print(x_batch_ext)
 #############################################################################
 # Seperating the dataset into the training, validating, and testing dataset
 n_train = int(0.6*n)
@@ -89,8 +89,8 @@ for epoch in range(training_epochs):
     cost_train_vector[epoch], beta_next = gradient_descent(beta,learning_rate,X_train,Y_train)
     cost_val_vector[epoch] = np.sum((X_val.dot(beta) - Y_val)**2) * 0.5
     cost_test_vector[epoch] = np.sum((X_test.dot(beta) - Y_test)**2) * 0.5
-    print('Epoch %3d, cost_train %.3f, cost_val %.3f,cost_test %.3f' % (epoch+1,cost_train_vector[epoch],cost_val_vector[epoch],cost_test_vector[epoch]))
-    print('Epoch %3d, weigts are [%.3f,%.3f,%.3f,%.3f,%.3f,%.3f]' % (epoch+1,beta_next[0],beta_next[1],beta_next[2],beta_next[3],beta_next[4],beta_next[5]))
+    #print('Epoch %3d, cost_train %.3f, cost_val %.3f,cost_test %.3f' % (epoch+1,cost_train_vector[epoch],cost_val_vector[epoch],cost_test_vector[epoch]))
+    #print('Epoch %3d, weigts are [%.3f,%.3f,%.3f,%.3f,%.3f,%.3f]' % (epoch+1,beta_next[0],beta_next[1],beta_next[2],beta_next[3],beta_next[4],beta_next[5]))
     beta = beta_next
 
 #############################################################################
@@ -108,6 +108,7 @@ axs[0].plot(X_train[:,1],Y_train,'bo')
 axs[0].plot(xx,yy,'r')
 axs[0].set_xlabel('X_train')
 axs[0].set_ylabel('Y_train')
+
 axs[0].set_title('The red line is the polynomial model')
 
 axs[1].grid(True)
